@@ -21,6 +21,46 @@
         We stand for top quality templates. Our genuine developers always optimized bootstrap commercial templates.
         <br/>Don't miss to use our cheap abd best bootstrap templates.
     </section>
+    <section class="filters">
+        <div class="row">
+            <div class="span12">
+                <div class="row">
+                    <div class="span12">
+                        <h4 class="title">
+                            <span class="pull-left"><span class="text"><span class="line"> <strong>Filters</strong></span></span></span>               
+                        </h4> 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span12">
+                        <div class="form-group">
+                            <form action="{{route('website.filteredProducts')}}" method="get">
+                                <select name="filter_category" id="" style="margin-right:100px">
+                                    <option value="null">Select a Category</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{$category->id}}">
+                                            {{$category->name}}
+                                            @if($category->parent_id != null)
+                                                -{{\App\Models\Category::find($category->parent_id)->name}}
+                                            @endif
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <select name="filter_price" id="" style="margin-right:100px">
+                                    <option value="null" >Price</option>
+                                    <option value="0-1000">0-1000 BDT</option>
+                                    <option value="1001-2000">1001-2000 BDT</option>
+                                    <option value="2001+">2001+ BDT</option>  
+                                </select>
+                                <input type="submit" class="btn btn-primary btn-lg" value="Filter">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br>
     <section class="main-content">
         <div class="row">
             <div class="span12">

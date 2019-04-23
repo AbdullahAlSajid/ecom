@@ -32,8 +32,11 @@ Route::get('checkout','WelcomeController@checkout')->name('website.checkout');
 //Website register route
 Route::get('login-register','WelcomeController@register')->name('website.register');
 
-//Website products route
-Route::get('products','WelcomeController@products')->name('website.products');
+//Website categorywise products route
+Route::get('products/category={category}','WelcomeController@categorywiseProducts')->name('website.categorywiseProducts');
+
+////Website filtered products route
+Route::get('products','WelcomeController@filteredProducts')->name('website.filteredProducts');
 
 //Website contact route
 Route::get('contact','WelcomeController@contact')->name('website.contact');
@@ -67,6 +70,9 @@ Route::resource('adminProducts','Admin\AdminProductController');
 
 //Admin Category List
 Route::resource('adminCategories','Admin\AdminCategoryController');
+
+//Admin Tag List
+Route::resource('adminTags','Admin\AdminTagController');
 
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Session;
@@ -40,7 +41,8 @@ class CartController extends Controller
         //dd($products);
         //=dd(Product::all());
         $product_cover_images = ProductImage::where('cover_image','1')->get();
-        $compact = compact('products','product_cover_images');
+        $categories = Category::all();
+        $compact = compact('products','product_cover_images','categories');
         return view('website.cart', $compact);
     }
 

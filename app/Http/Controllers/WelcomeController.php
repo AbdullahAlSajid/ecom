@@ -4,22 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
 {
     public function index()
     {
-        $latest_products = Product::latest()->take(4)->get();
+        $latest_products = Product::latest()->take(5)->get();
         $product_cover_images = ProductImage::where('cover_image','1')->get();
-        $compact = compact('latest_products','product_cover_images');
+        $categories = Category::all();
+        $compact = compact('latest_products','product_cover_images','categories');
         return view('website.index',$compact);
     }
 
-    public function cart()
-    {
-        return view('website.cart');
-    }
+    
 
     public function checkout()
     {
@@ -28,12 +27,89 @@ class WelcomeController extends Controller
 
     public function register()
     {
-        return view('website.register');
+        $categories = Category::all();
+        $compact = compact('categories');
+        return view('website.register',$compact);
     }
 
-    public function products()
+    public function categorywiseProducts($categoryId)
     {
-        return view('website.products');
+        $categories = Category::all();
+        $clickedCategory = Category::where('id',$categoryId)->first();
+        $allProduct = Product::all();
+        $price = 'null';
+        $product_cover_images = ProductImage::where('cover_image','1')->get();
+        $compact = compact('clickedCategory','categories','product_cover_images','price');
+        
+        return view('website.products',$compact);
+    }
+
+    // {{$clickedCategory->name}}  
+    //                             @if($clickedCategory->parent_id != null)
+    //                                 - {{\App\Models\Category::find($clickedCategory->parent_id)->name}}
+    //                             @endif
+
+    public function filteredProducts(Request $req)
+    {
+        $categories = Category::all();
+        $allProduct = Product::all();
+        $product_cover_images = ProductImage::where('cover_image','1')->get();
+        //Only category Filter
+        if($req->filter_category != null && $req->filter_price == 'null'){
+            $price = 'null';
+            $clickedCategory = Category::where('id',$req->filter_category)->first();
+            $compact = compact('clickedCategory','categories','product_cover_images','price');
+            return view('website.products',$compact);
+        }
+        //Only Price Filter
+        if($req->filter_category == 'null' && $req->filter_price != null){
+            $minPrice = null;
+            $maxPrice = null;
+            $clickedCategory = 'null';
+            $price = $req->filter_price;
+            //if price has min and max limit
+            if(strpos($req->filter_price, '-') !== false) {
+                $priceSplit = explode("-",$req->filter_price);
+                $minPrice = (int)$priceSplit[0];
+                $maxPrice = (int)$priceSplit[1];
+                $priceFilteredProducts = Product::whereBetween('price',array($minPrice,$maxPrice))->get();
+                $compact = compact('priceFilteredProducts','categories','product_cover_images','minPrice','maxPrice','clickedCategory','price');
+                return view('website.products',$compact);
+            }
+            //if price has only min limit 
+            elseif(strpos($req->filter_price, '+') !== false){
+                $priceSplit = explode("+",$req->filter_price);
+                $minPrice = (int)$priceSplit[0];
+                $priceFilteredProducts = Product::where('price','>=',$minPrice)->get();
+                $compact = compact('priceFilteredProducts','categories','product_cover_images','minPrice','maxPrice','clickedCategory','price');
+                return view('website.products',$compact);
+            }
+        }       
+        //For both Filter
+        if($req->filter_category != null && $req->filter_price != null){
+            $minPrice = null;
+            $maxPrice = null;
+            $clickedCategory = Category::where('id',$req->filter_category)->first();
+            //dd($clickedCategory->products);
+            $price = $req->filter_price;
+            //if price has min and max limit
+            if(strpos($req->filter_price, '-') !== false) {
+                $priceSplit = explode("-",$req->filter_price);
+                $minPrice = (int)$priceSplit[0];
+                $maxPrice = (int)$priceSplit[1];
+                $compact = compact('categories','product_cover_images','minPrice','maxPrice','clickedCategory','price');
+                return view('website.products',$compact);
+            }
+            //if price has only min limit 
+            elseif(strpos($req->filter_price, '+') !== false){
+                $priceSplit = explode("+",$req->filter_price);
+                $minPrice = (int)$priceSplit[0];
+                $maxPrice = null;
+                $i = 0;
+                $compact = compact('priceFilteredProducts','categories','product_cover_images','minPrice','maxPrice','clickedCategory','price');
+                return view('website.products',$compact);
+            }
+        }
     }
 
     public function contact()
@@ -45,7 +121,8 @@ class WelcomeController extends Controller
     {
         $product = Product::findOrFail($id);
         $product_images = ProductImage::where('product_id',$id)->get();
-        $compact = compact('product','product_images');
+        $categories = Category::all();
+        $compact = compact('product','product_images','categories');
         return view('website.product_details',$compact);
     }
 }
