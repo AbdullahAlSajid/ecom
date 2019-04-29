@@ -26,8 +26,8 @@ Route::get('/','WelcomeController@index')->name('website.index');
 //Website cart route
 Route::get('cart','WelcomeController@cart')->name('website.cart');
 
-//Website checkout route
-Route::get('checkout','WelcomeController@checkout')->name('website.checkout');
+// Website checkout route
+// Route::get('checkout','WelcomeController@checkout')->name('website.checkout');
 
 //Website register route
 Route::get('login-register','WelcomeController@register')->name('website.register');
@@ -35,8 +35,11 @@ Route::get('login-register','WelcomeController@register')->name('website.registe
 //Website categorywise products route
 Route::get('products/category={category}','WelcomeController@categorywiseProducts')->name('website.categorywiseProducts');
 
-////Website filtered products route
+//Website filtered products route
 Route::get('products','WelcomeController@filteredProducts')->name('website.filteredProducts');
+
+//Website searched products route
+Route::get('products/search','WelcomeController@searchedProducts')->name('website.searchedProducts');
 
 //Website contact route
 Route::get('contact','WelcomeController@contact')->name('website.contact');
@@ -60,6 +63,21 @@ Route::get('cart/update/{id}/{qty}','CartController@updateCart')->name('cart.upd
 Route::get('cart/remove/{id}','CartController@removeCart')->name('cart.removeCart');
 
 
+                        //Checkout Routes//
+
+//Route::get('checkoutt','CheckoutController@cartCheckout')->name('checkout');
+Route::get('checkout','CheckoutController@checkout')->name('website.checkout');
+
+//Billing Form
+Route::get('checkout/billing','CheckoutController@billing')->name('website.billing');
+
+Route::get('checkout/confirm','CheckoutController@orderStore')->name('website.checkout.confirm');
+
+
+Route::get('checkout/invoice','CheckoutController@pdfGen')->name('website.checkout.invoice');
+
+
+
                     //Admin Routes//
 
 //Admin landing route
@@ -67,15 +85,30 @@ Route::get('cart/remove/{id}','CartController@removeCart')->name('cart.removeCar
 
 //Admin Product List
 Route::resource('adminProducts','Admin\AdminProductController');
-
+Route::get('adminProducts/delete/{id}','Admin\AdminProductController@delete')->name('adminProducts.delete');
 //Admin Category List
 Route::resource('adminCategories','Admin\AdminCategoryController');
 
 //Admin Tag List
 Route::resource('adminTags','Admin\AdminTagController');
 
+//Admin Orders
+Route::get('adminOrders','Admin\AdminOrderController@index')->name('adminOrders.index');
+Route::get('adminOrder/show/{id}','Admin\AdminOrderController@show')->name('adminOrders.show');
 
 
+                //Customer Routes//
+
+Route::get('Orders','Customer\CustomerOrderController@index')->name('customerOrders.index');
+Route::get('Order/{id}','Customer\CustomerOrderController@show')->name('customerOrders.show');
+
+
+
+Route::get('test1',function(){
+    $categories = App\Models\Category::all();
+    $compact = compact('categories');
+    return view('website.invoice',$compact);
+});
 //Test Route
 Route::get('test',function (){
 

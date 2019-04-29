@@ -23,13 +23,16 @@ class CartController extends Controller
         $cart->add($product,$product->id);
         Session::put('cart',$cart); 
         //dd(Session::get('cart'));
+        flash('Product added to cart')->success()->important();
+        //flash()->overlay('Product added to cart', 'Added to cart');
         return redirect()->route('website.index');
     }
 
     public function getCart(){
         $product = null;
+        $categories = Category::all();
         if(!Session::has('cart')){
-            return view('website.cart',compact('product'));
+            return view('website.cart',compact('product','categories'));
         }
         
         $products = Session::get('cart');
@@ -41,7 +44,6 @@ class CartController extends Controller
         //dd($products);
         //=dd(Product::all());
         $product_cover_images = ProductImage::where('cover_image','1')->get();
-        $categories = Category::all();
         $compact = compact('products','product_cover_images','categories');
         return view('website.cart', $compact);
     }

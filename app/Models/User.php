@@ -33,6 +33,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class,'user_roles','user_id','role_id');
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class,'reg_customer','id');
+    }
+
+
     public function isAdmin()
     {
         return !! ($this->roles->first()->name == 'Admin');

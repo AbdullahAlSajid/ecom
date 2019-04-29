@@ -1,4 +1,5 @@
-<section class="navbar main-menu">
+
+<section class="navbar main-menu">  
     <div class="navbar-inner main-menu">
         <a href="{{route('website.index')}}" class="logo pull-left"><img src="{{asset('website/themes/images/logo.png')}}" class="site_logo" alt=""></a>
         <nav id="menu" class="pull-right">
@@ -19,4 +20,5 @@
             </ul>
         </nav>
     </div>
+
 </section>

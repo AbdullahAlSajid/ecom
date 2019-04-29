@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>@yield('title','Shopper Admin')</title>
+    <title>@yield('title','Shopper Customer')</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{asset('admin/vendors/iconfonts/mdi/css/materialdesignicons.min.css')}}">
     <link rel="stylesheet" href="{{asset('admin/vendors/css/vendor.bundle.base.css')}}">
@@ -23,22 +23,20 @@
 <body>
 <div class="container-scroller">
     <!-- Main Navbar -->
-    
-    @include('admin.components.nav-bar')
+    @include('customer.components.nav-bar')
+    @include('flash::message')
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
         <!-- Side bar -->
-        @include('admin.components.side-bar')
+        @include('customer.components.side-bar')
         <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
                 <!-- Main Content -->
-                @include('flash::message')
-                
                 @yield('main-content')
                 <!-- content-wrapper ends -->
                 <!-- Footer -->
-                @include('admin.components.footer')
+                @include('customer.components.footer')
                 <!-- partial -->
             </div>
         </div>
@@ -62,8 +60,9 @@
 <script src="{{asset('admin/js/dashboard.js')}}"></script>
 <!-- End custom js for this page-->
 <script>
-        $('#flash-overlay-modal').modal();
+    $('#flash-overlay-modal').modal();
 </script>
+
 @stack('scripts')
 </body>
 

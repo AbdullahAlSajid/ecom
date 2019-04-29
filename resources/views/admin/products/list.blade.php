@@ -17,6 +17,7 @@
                             <th>Status</th>
                             <th>Categories</th>
                             <th>Price</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -40,6 +41,11 @@
                                     </td>
                                     <td>
                                         {{$product->price}} tk
+                                    </td>
+                                    <td>
+                                        <a href="{{route('adminProducts.edit',$product->id)}}" class="btn btn-primary btn-sm">Edit</a>
+                                        <a href="{{route('adminProducts.show',$product->id)}}" class="btn btn-info btn-sm">Show</a>
+                                        <a href="{{route('adminProducts.delete',$product->id)}}" class="btn btn-danger btn-sm">Delete</a>
                                     </td>
                                 </tr>
                             @endforeach

@@ -1,4 +1,5 @@
 @extends('website.master')
+
 @section('contents')
     <section class="header_text sub">
         <img class="pageBanner" src="{{asset('website/themes/images/pageBanner.png')}}" alt="New products" >

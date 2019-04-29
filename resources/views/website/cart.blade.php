@@ -1,4 +1,5 @@
 @extends('website.master')
+
 @section('contents')
     <section class="header_text sub">
         <img class="pageBanner" src="{{asset('website/themes/images/pageBanner.png')}}" alt="New products" >
@@ -37,18 +38,19 @@
                                 <td id="pdT{{$product['item']->id}}">{{$product['price']}}</td>
                             </tr>
                         @endforeach
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td><strong id="totalPrice">{{$products->totalPrice}}</strong></td>
+                        </tr>
                     @endif
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td><strong id="totalPrice">{{$products->totalPrice}}</strong></td>
-                    </tr>
+                    
                     </tbody>
                 </table>
-                <h4>What would you like to do next?</h4>
+                <!-- <h4>What would you like to do next?</h4>
                 <p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
                 <label class="radio">
                     <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
@@ -57,23 +59,42 @@
                 <label class="radio">
                     <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
                     Estimate Shipping &amp; Taxes
-                </label>
+                </label> -->
                 <hr>
                 <p class="cart-total right">
-                    <strong>Sub-Total</strong>:	$100.00<br>
-                    <strong>Eco Tax (-2.00)</strong>: $2.00<br>
-                    <strong>VAT (17.5%)</strong>: $17.50<br>
-                    <strong>Total</strong>: $119.50<br>
+                    <strong>Sub-Total : </strong>
+                    <strong id="subTotalList" >
+                        @if(Session::has('cart'))
+                            {{$products->totalPrice}}
+                        @else
+                            00
+                        @endif
+                    </strong>
+                    <strong> BDT</strong><br>
+                    <strong>Eco Tax : 00 BDT</strong><br>
+                    <strong>VAT : 00 BDT</strong><br>
+                    <strong>Total : </strong>
+                    <strong id="totalPriceList">
+                        @if(Session::has('cart'))
+                            {{$products->totalPrice}}
+                        @else
+                            00
+                        @endif 
+                    </strong>
+                    <strong> BDT</strong><br>
                 </p>
                 <hr/>
                 <p class="buttons center">
-                    <button class="btn" type="button">Update</button>
-                    <button class="btn" type="button">Continue</button>
-                    <button class="btn btn-inverse" type="submit" id="checkout">Checkout</button>
+                    <!-- <button class="btn" type="button">Update</button> -->
+                    <!-- <button class="btn" type="button">Continue</button> -->
+                    <!-- <button class="btn btn-inverse" type="submit" id="checkout">Checkout</button> -->
+                    <a href="" class="btn">Continue</a>
+                    <a href="{{route('website.checkout')}}" class="btn btn-inverse">Checkout</a>
+                    
                 </p>
             </div>
             <div class="span3 col">
-                <div class="block">
+                <!-- <div class="block">
                     <ul class="nav nav-list">
                         <li class="nav-header">SUB CATEGORIES</li>
                         <li><a href="products.html">Nullam semper elementum</a></li>
@@ -128,7 +149,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </section>
@@ -169,6 +190,8 @@ $.ajaxSetup({
                     
                     $("#pdT"+id).html(quantity * unitP);
                     $("#totalPrice").html(data);
+                    $("#totalPriceList").html(data);
+                    $("#subTotalList").html(data);
                 }
             });
         }
@@ -186,6 +209,8 @@ $.ajaxSetup({
                 success:function (data) {
                     $("#pd"+id).remove();
                     $("#totalPrice").html(data);
+                    $("#totalPriceList").html(data);
+                    $("#subTotalList").html(data);
                     $("#totalProducts").html(totalProducts -1);
                 }
             });

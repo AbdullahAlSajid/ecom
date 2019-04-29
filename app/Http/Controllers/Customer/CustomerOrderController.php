@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Customer;
 
-use App\Models\Tag;
 use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\Product;
 use App\Http\Controllers\Controller;
-
-class AdminTagController extends Controller
+use Auth;
+class CustomerOrderController extends Controller
 {
     public function __construct()
     {
@@ -19,9 +20,10 @@ class AdminTagController extends Controller
      */
     public function index()
     {
-        $tags = Tag::all();
-        $compact = compact('tags');
-        return view('admin.tags.list',$compact);
+        $orders = Order::latest()->where('reg_customer',Auth::user()->id)->get();
+        $compact = compact('orders');
+        //dd($orders);
+        return view('customer.orders.list',$compact);
     }
 
     /**
@@ -31,7 +33,7 @@ class AdminTagController extends Controller
      */
     public function create()
     {
-        
+        //
     }
 
     /**
@@ -42,11 +44,7 @@ class AdminTagController extends Controller
      */
     public function store(Request $request)
     {
-        $tags = Tag::create([
-            'name' => $request->name,
-        ]);
-        flash('New tag added.')->success()->important();
-        return redirect(route('adminTags.index'));
+        
     }
 
     /**
@@ -57,7 +55,19 @@ class AdminTagController extends Controller
      */
     public function show($id)
     {
-        //
+        $order = Order::find($id);
+        //dd($id);
+        $products = Product::all();
+        $total = 0;
+        foreach($order->products as $item){
+            foreach($products as $product){
+                if($item->id == $product->id){
+                    $total += ($product->price * $item->pivot->quantity);
+                }
+            }
+        }
+        $compact = compact('order','products','total');
+        return view('customer.orders.show',$compact);
     }
 
     /**
@@ -91,9 +101,6 @@ class AdminTagController extends Controller
      */
     public function destroy($id)
     {
-        $tag = Tag::findOrFail($id);
-        $tag->delete();
-        flash('Tag Deleted.')->error()->important();
-        return redirect()->route('adminTag.index');
+        //
     }
 }

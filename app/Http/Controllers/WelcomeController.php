@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
 {
     public function index()
     {
-        $latest_products = Product::latest()->take(5)->get();
+        $latest_products = Product::latest()->take(12)->get();
         $product_cover_images = ProductImage::where('cover_image','1')->get();
         $categories = Category::all();
         $compact = compact('latest_products','product_cover_images','categories');
@@ -22,7 +23,15 @@ class WelcomeController extends Controller
 
     public function checkout()
     {
-        return view('website.checkout');
+        
+        if(Session::has('cart')){
+            if(count(Session::get('cart')->items)){
+                $categories = Category::all();
+                $compact = compact('categories');
+                return view('website.checkout',$compact);
+            }
+        }
+        
     }
 
     public function register()
@@ -43,11 +52,6 @@ class WelcomeController extends Controller
         
         return view('website.products',$compact);
     }
-
-    // {{$clickedCategory->name}}  
-    //                             @if($clickedCategory->parent_id != null)
-    //                                 - {{\App\Models\Category::find($clickedCategory->parent_id)->name}}
-    //                             @endif
 
     public function filteredProducts(Request $req)
     {
@@ -110,6 +114,17 @@ class WelcomeController extends Controller
                 return view('website.products',$compact);
             }
         }
+    }
+
+    public function searchedProducts(Request $req)
+    {
+        $categories = Category::all();
+        $searchKey = $req->searchKey;
+        $searchedTag = Tag::where('name',$req->searchKey)->first();
+        $searchedProducts = Product::where('name','like',"%$searchKey%");
+        $product_cover_images = ProductImage::where('cover_image','1')->get();
+        $compact = compact('categories','searchedTag','searchedProducts','searchKey','product_cover_images');
+        return view('website.search',$compact);
     }
 
     public function contact()

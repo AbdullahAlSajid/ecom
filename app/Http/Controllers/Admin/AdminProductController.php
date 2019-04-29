@@ -49,6 +49,17 @@ class AdminProductController extends Controller
     public function store(Request $request)
     {
         /*Create products*/
+
+        $request->validate([
+            'name' => 'required|min:4',
+            'description' => 'required',
+            'price' => 'required',
+            'quantity' => 'required',
+            'categories' => 'required',
+            'tags' => 'required',
+            'cover_photo' => 'required',
+        ]);
+
         $product = Product::create([
             'name' => $request->name,
             'sku' => random_int(100000, 999999),
@@ -89,7 +100,7 @@ class AdminProductController extends Controller
             'product_id' => $product->id,
             'image' => $details_photo2_path,
         ]);
-
+        flash('New Product Added.')->success()->important();
         return redirect(route('adminProducts.index'));
     }
 
@@ -101,7 +112,11 @@ class AdminProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::find($id);
+        $categories = Category::all();
+        $tags = Tag::all();
+        $compact = compact('product','categories','tags');
+        return view('admin.products.show',$compact);
     }
 
     /**
@@ -112,7 +127,24 @@ class AdminProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Product::find($id);
+        $categories = Category::all();
+        $tags = Tag::all();
+        
+        // foreach($categories as $category){
+        //     foreach($product->categories as $pc)
+        //     {
+        //         if($pc->id == $category->id)
+        //         {
+        //             $i++;
+        //         }
+        //     }
+            
+        // }
+        // dd($i);
+        
+        $compact = compact('product','categories','tags');
+        return view('admin.products.edit',$compact);
     }
 
     /**
@@ -122,9 +154,27 @@ class AdminProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $req, $id)
     {
-        //
+        $product = Product::find($id);
+        $categories = Category::all();
+        $tags = Tag::all();
+        $product->name = $req->name;
+        $product->price = $req->price;
+        $product->quantity = $req->quantity;
+        $product->description = $req->description;
+        $product->save();
+
+        if ($req->has('categories') && !empty($req->categories)) {
+            $product->categories()->sync($req->categories);
+        }
+
+        if ($req->has('tags') && !empty($req->tags)) {
+            $product->tags()->sync($req->tags);
+        }
+        
+        flash('Product Updated successfully.')->success()->important();
+        return redirect()->route('adminProducts.index');
     }
 
     /**
@@ -133,8 +183,9 @@ class AdminProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        flash("Can't Delete this product. It has been already ordered.")->error()->important();
+        return redirect()->back();
     }
 }

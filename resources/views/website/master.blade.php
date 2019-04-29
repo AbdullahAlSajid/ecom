@@ -20,12 +20,14 @@
     <script src="{{asset('website/bootstrap/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('website/themes/js/superfish.js')}}"></script>
     <script src="{{asset('website/themes/js/jquery.scrolltotop.js')}}"></script>
+    
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->
 </head>
 <body>
+    @include('flash::message')
     <div id="top-bar" class="container">
         <!--Top Bar-->
         @include('website.components.top-bar')
@@ -40,6 +42,9 @@
         <!--Footer-->
         @include('website.components.footer')
     </div>
+    <script>
+        $('#flash-overlay-modal').modal();
+    </script>
     <!--Extra Scripts-->
     @stack('scripts')
 </body>

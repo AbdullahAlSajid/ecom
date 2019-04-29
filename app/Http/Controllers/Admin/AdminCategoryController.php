@@ -46,8 +46,8 @@ class AdminCategoryController extends Controller
             'name' => $request->name,
             'parent_id' => $request->parent_category,
         ]);
-
-        return redirect(route('adminCategories.index'));
+        flash('New category added.')->success()->important();
+        return redirect()->route('adminCategories.index');
     }
 
     /**
@@ -94,6 +94,7 @@ class AdminCategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $category->delete();
+        flash('Category deleted.')->warning()->important();
         return redirect()->route('adminCategories.index');
     }
 }

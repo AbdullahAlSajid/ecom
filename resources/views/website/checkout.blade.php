@@ -1,184 +1,123 @@
 @extends('website.master')
+
 @section('contents')
     <section class="header_text sub">
         <img class="pageBanner" src="{{asset('website/themes/images/pageBanner.png')}}" alt="New products" >
-        <h4><span>Check Out</span></h4>
+        <!-- <h4><span>Checkout Options</span></h4> -->
     </section>
     <section class="main-content">
         <div class="row">
             <div class="span12">
                 <div class="accordion" id="accordion2">
                     <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">Checkout Options</a>
-                        </div>
                         <div id="collapseOne" class="accordion-body in collapse">
                             <div class="accordion-inner">
+                            <h4 class="title"><span class="text"><strong>Checkout</strong> Options</span></h4>
                                 <div class="row-fluid">
                                     <div class="span6">
-                                        <h4>New Customer</h4>
+                                        <h4>New Customer?</h4>
+                                        <hr>
+                                        <h5>1) Register :</h3>
                                         <p>By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.</p>
-                                        <form action="#" method="post">
-                                            <fieldset>
-                                                <label class="radio" for="register">
-                                                    <input type="radio" name="account" value="register" id="register" checked="checked">Register Account
-                                                </label>
-                                                <label class="radio" for="guest">
-                                                    <input type="radio" name="account" value="guest" id="guest">Guest Checkout
-                                                </label>
-                                                <br>
-                                                <button class="btn btn-inverse" data-toggle="collapse" data-parent="#collapse2">Continue</button>
-                                            </fieldset>
-                                        </form>
-                                    </div>
-                                    <div class="span6">
-                                        <h4>Returning Customer</h4>
-                                        <p>I am a returning customer</p>
-                                        <form action="#" method="post">
+                                        <form action="{{route('register')}}" method="post" class="form-stacked">
+                                            @csrf
                                             <fieldset>
                                                 <div class="control-group">
                                                     <label class="control-label">Username</label>
                                                     <div class="controls">
-                                                        <input type="text" placeholder="Enter your username" id="username" class="input-xlarge">
+                                                        {{--<input type="text" placeholder="Enter your username" class="input-xlarge">--}}
+                                                        <input id="name" type="text" placeholder="Enter your username" class="input-xlarge{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required>
+
+                                                        @if ($errors->has('name'))
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $errors->first('name') }}</strong>
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label">Email address:</label>
+                                                    <div class="controls">
+                                                        <input id="email" type="email" placeholder="Enter your email" class="input-xlarge{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+
+                                                        @if ($errors->has('email'))
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $errors->first('email') }}</strong>
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label">Password:</label>
+                                                    <div class="controls">
+                                                        <input id="password" type="password" placeholder="Enter your password" class="input-xlarge{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+
+                                                        @if ($errors->has('password'))
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $errors->first('password') }}</strong>
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label">Confirm Password:</label>
+                                                    <div class="controls">
+                                                        <input id="password-confirm" type="password" placeholder="Retype your password" class="input-xlarge" name="password_confirmation" required>
+                                                    </div>
+                                                </div>
+                                                
+                                                <hr>
+                                                <div class="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="Create your account"></div>
+                                            </fieldset>
+                                        </form>
+                                          
+                                        <h5 style="padding-left:250px">Or</h5>
+                                        
+                                        <h5>2) Guest Checkout :</h3>
+                                        <p>By checking out as a guest you won't be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.</p> 
+                                        <hr>
+                                        <a href="{{route('website.billing','guest')}}" class="btn btn-inverse">Continue</a>
+                                        
+                                    </div>
+                                    <div class="span6">
+                                        <h4>Already Registered Customer?</h4>
+                                        <hr>
+                                        <form action="{{ route('login','checkout') }}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="next" value="/">
+                                            <fieldset>
+                                                <div class="control-group">
+                                                    <label class="control-label">Email</label>
+                                                    <div class="controls">
+                                                        <input id="email" type="email" placeholder="Enter your username" class="input-xlarge{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+
+                                                        @if ($errors->has('email'))
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $errors->first('email') }}</strong>
+                                                            </span>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="control-group">
                                                     <label class="control-label">Password</label>
                                                     <div class="controls">
-                                                        <input type="password" placeholder="Enter your password" id="password" class="input-xlarge">
+                                                        <input id="password" type="password" placeholder="Enter your password" class="input-xlarge{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+
+                                                        @if ($errors->has('password'))
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $errors->first('password') }}</strong>
+                                                            </span>
+                                                        @endif
                                                     </div>
                                                 </div>
-                                                <button class="btn btn-inverse">Continue</button>
+                                                <div class="control-group">
+                                                    <input tabindex="3" class="btn btn-inverse large" type="submit" value="Continiue">
+                                                    <hr>
+                                                    <!-- <p class="reset">Recover your <a tabindex="4" href="#" title="Recover your username or password">username or password</a></p> -->
+                                                </div>
                                             </fieldset>
                                         </form>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">Account &amp; Billing Details</a>
-                        </div>
-                        <div id="collapseTwo" class="accordion-body collapse">
-                            <div class="accordion-inner">
-                                <div class="row-fluid">
-                                    <div class="span6">
-                                        <h4>Your Personal Details</h4>
-                                        <div class="control-group">
-                                            <label class="control-label">First Name</label>
-                                            <div class="controls">
-                                                <input type="text" placeholder="" class="input-xlarge">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Last Name</label>
-                                            <div class="controls">
-                                                <input type="text" placeholder="" class="input-xlarge">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Email Address</label>
-                                            <div class="controls">
-                                                <input type="text" placeholder="" class="input-xlarge">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Telephone</label>
-                                            <div class="controls">
-                                                <input type="text" placeholder="" class="input-xlarge">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Fax</label>
-                                            <div class="controls">
-                                                <input type="text" placeholder="" class="input-xlarge">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="span6">
-                                        <h4>Your Address</h4>
-                                        <div class="control-group">
-                                            <label class="control-label">Company</label>
-                                            <div class="controls">
-                                                <input type="text" placeholder="" class="input-xlarge">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Company ID:</label>
-                                            <div class="controls">
-                                                <input type="text" placeholder="" class="input-xlarge">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label"><span class="required">*</span> Address 1:</label>
-                                            <div class="controls">
-                                                <input type="text" placeholder="" class="input-xlarge">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Address 2:</label>
-                                            <div class="controls">
-                                                <input type="text" placeholder="" class="input-xlarge">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label"><span class="required">*</span> City:</label>
-                                            <div class="controls">
-                                                <input type="text" placeholder="" class="input-xlarge">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label"><span class="required">*</span> Post Code:</label>
-                                            <div class="controls">
-                                                <input type="text" placeholder="" class="input-xlarge">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label"><span class="required">*</span> Country:</label>
-                                            <div class="controls">
-                                                <select class="input-xlarge">
-                                                    <option value="1">Afghanistan</option>
-                                                    <option value="2">Albania</option>
-                                                    <option value="3">Algeria</option>
-                                                    <option value="4">American Samoa</option>
-                                                    <option value="5">Andorra</option>
-                                                    <option value="6">Angola</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label"><span class="required">*</span> Region / State:</label>
-                                            <div class="controls">
-                                                <select name="zone_id" class="input-xlarge">
-                                                    <option value=""> --- Please Select --- </option>
-                                                    <option value="3513">Aberdeen</option>
-                                                    <option value="3514">Aberdeenshire</option>
-                                                    <option value="3515">Anglesey</option>
-                                                    <option value="3516">Angus</option>
-                                                    <option value="3517">Argyll and Bute</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">Confirm Order</a>
-                        </div>
-                        <div id="collapseThree" class="accordion-body collapse">
-                            <div class="accordion-inner">
-                                <div class="row-fluid">
-                                    <div class="control-group">
-                                        <label for="textarea" class="control-label">Comments</label>
-                                        <div class="controls">
-                                            <textarea rows="3" id="textarea" class="span12"></textarea>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-inverse pull-right">Confirm order</button>
                                 </div>
                             </div>
                         </div>
