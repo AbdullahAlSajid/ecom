@@ -26,11 +26,12 @@
                                                     <label class="control-label">Username</label>
                                                     <div class="controls">
                                                         {{--<input type="text" placeholder="Enter your username" class="input-xlarge">--}}
-                                                        <input id="name" type="text" placeholder="Enter your username" class="input-xlarge{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required>
+                                                        <input id="name" type="text" placeholder="Enter your username" class="input-xlarge{{ $errors->has('nameR') ? ' is-invalid' : '' }}" name="nameR" value="{{ old('nameR') }}" required>
 
-                                                        @if ($errors->has('name'))
-                                                            <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $errors->first('name') }}</strong>
+                                                        @if ($errors->has('nameR'))
+                                                        <br>
+                                                            <span class="invalid-feedback" role="alert" style="color:red">
+                                                                <strong>{{ $errors->first('nameR') }}</strong>
                                                             </span>
                                                         @endif
                                                     </div>
@@ -38,11 +39,12 @@
                                                 <div class="control-group">
                                                     <label class="control-label">Email address:</label>
                                                     <div class="controls">
-                                                        <input id="email" type="email" placeholder="Enter your email" class="input-xlarge{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+                                                        <input id="email" type="text" placeholder="Enter your email" class="input-xlarge{{ $errors->has('emailR') ? ' is-invalid' : '' }}" name="emailR" value="{{ old('emailR') }}" required>
 
-                                                        @if ($errors->has('email'))
-                                                            <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $errors->first('email') }}</strong>
+                                                        @if ($errors->has('emailR'))
+                                                        <br>
+                                                            <span class="invalid-feedback" role="alert" style="color:red">
+                                                                <strong>{{ $errors->first('emailR') }}</strong>
                                                             </span>
                                                         @endif
                                                     </div>
@@ -50,11 +52,12 @@
                                                 <div class="control-group">
                                                     <label class="control-label">Password:</label>
                                                     <div class="controls">
-                                                        <input id="password" type="password" placeholder="Enter your password" class="input-xlarge{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                                                        <input id="password" type="password" placeholder="Enter your password" class="input-xlarge{{ $errors->has('passwordR') ? ' is-invalid' : '' }}" name="passwordR" required>
 
-                                                        @if ($errors->has('password'))
-                                                            <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $errors->first('password') }}</strong>
+                                                        @if ($errors->has('passwordR'))
+                                                        <br>
+                                                            <span class="invalid-feedback" role="alert" style="color:red">
+                                                                <strong>{{ $errors->first('passwordR') }}</strong>
                                                             </span>
                                                         @endif
                                                     </div>
@@ -92,7 +95,8 @@
                                                         <input id="email" type="email" placeholder="Enter your username" class="input-xlarge{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
 
                                                         @if ($errors->has('email'))
-                                                            <span class="invalid-feedback" role="alert">
+                                                        <br>
+                                                            <span class="invalid-feedback" role="alert" style="color:red">
                                                                 <strong>{{ $errors->first('email') }}</strong>
                                                             </span>
                                                         @endif
@@ -104,7 +108,8 @@
                                                         <input id="password" type="password" placeholder="Enter your password" class="input-xlarge{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
                                                         @if ($errors->has('password'))
-                                                            <span class="invalid-feedback" role="alert">
+                                                        <br>
+                                                            <span class="invalid-feedback" role="alert" style="color:red">
                                                                 <strong>{{ $errors->first('password') }}</strong>
                                                             </span>
                                                         @endif
